@@ -1,0 +1,100 @@
+* CINAPS - Cinaps Is Not A Preprocessing System
+
+Cinaps is a trivial Metaprogramming tool for OCaml using the OCaml
+toplevel.
+
+It is intended for two purposes:
+- when you want to include a bit of generated code in a file, but
+  writing a proper generator/ppx rewriter is not worth it
+- when you have many repeated blocks of similar code in your program,
+  to help writing and maintaining them
+
+It is not intended as a general preprocessor, and in particular cannot
+only be used to generate static code that is indenpendant of the
+system.
+
+** How does it work?
+
+Cinaps is a purely textual tool. It recognizes special syntax of the
+form =(*$ <ocaml-code> *)= in the input. =<ocaml-code>= is evaluated
+and whatever it prints on the standard output is compared against what
+follows in the file until the next =($ ... *)= form, in the same way
+that expectation tests works.
+
+A form ending with =$*)= stops the matching and switch back to plain
+text mode. In particular the empty form =(*$*)= can be used to mark
+the end of a generated block.
+
+If the actual output doesn't match the expected one, cinaps creates a
+=.corrected= file containing the actual output, diff the original file
+against the actual output and exits with an error code. Other it
+simply exits with error code 0.
+
+For instance:
+
+#+begin_src sh
+$ cat file.ml
+let x = 1
+(*$ print_newline ();
+    List.iter (fun s -> Printf.printf "let ( %s ) = Pervasives.( %s )\n" s s)
+      ["+"; "-"; "*"; "/"] *)
+(*$*)
+let y = 2
+
+$ cinaps file.ml
+---file.ml
++++file.ml.corrected
+File "file.ml", line 5, characters 0-1:
+  let x = 1
+  (*$ print_newline ();
+      List.iter (fun s -> Printf.printf "let ( %s ) = Pervasives.( %s )\n" s s)
+        ["+"; "-"; "*"; "/"] *)
++|let ( + ) = Pervasives.( + )
++|let ( - ) = Pervasives.( - )
++|let ( * ) = Pervasives.( * )
++|let ( / ) = Pervasives.( / )
+  (*$*)
+  let y = 2
+
+$ echo $?
+1
+$ cp file.ml.corrected file.ml
+$ cinaps file.ml
+$ echo $?
+0
+#+end_src
+
+You can also pass =-i= to override the file in place in case of
+mismatch. For instance you can have a =cinaps= target in your build
+system to refresh the files in your project.
+
+** Capturing text from the input
+
+In any form =(*$ ... *)= form, the variabls =_last_text_block=
+contains the contents of the text between the previous =(*$ ... *)=
+form or beginning of file and the current form.
+
+For instance you can use it write a block of code and copy it to a
+second block of code that is similar except for some simple
+substitution:
+
+#+begin_src ocaml
+(*$*)
+let rec power_int32 n p =
+  if Int32.equal p 0 then
+    Int32.one
+  else
+    Int32.mul n (power n (Int32.pred p))
+
+(*$ print_string (Str.global_replace (Str.regexp "32") "64" _last_text_block) *)
+let rec power_int64 n p =
+  if Int64.equal p 0 then
+    Int64.one
+  else
+    Int64.mul n (power n (Int64.pred p))
+
+(*$*)
+#+end_src
+
+Now, whenever you modify power_int32, you can just run cinaps to get
+the =power_int64= version.

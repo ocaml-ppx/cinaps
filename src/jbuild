@@ -1,0 +1,6 @@
+(library
+ ((name cinaps)
+  (libraries (compiler-libs.toplevel unix))
+  (preprocess no_preprocessing)))
+
+(ocamllex (lexer))
