@@ -10,3 +10,5 @@
 (install
  ((section bin)
   (files ((main.bc as cinaps)))))
+
+(jbuild_version jane_street)

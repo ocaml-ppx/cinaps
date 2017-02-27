@@ -4,3 +4,5 @@
   (preprocess no_preprocessing)))
 
 (ocamllex (lexer))
+
+(jbuild_version jane_street)

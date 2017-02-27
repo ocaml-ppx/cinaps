@@ -2,3 +2,5 @@
  ((name runtest)
   (deps   (test.ml))
   (action "${bin:cinaps} ${<}")))
+
+(jbuild_version jane_street)
