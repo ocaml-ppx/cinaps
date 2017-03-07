@@ -5,7 +5,6 @@
   (link_executables false)
   (preprocess no_preprocessing)))
 
-(provides (cinaps (file main.bc)))
 
 (install
  ((section bin)
