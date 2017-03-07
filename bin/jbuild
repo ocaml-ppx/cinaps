@@ -10,4 +10,4 @@
  ((section bin)
   (files ((main.bc as cinaps)))))
 
-(jbuild_version jane_street)
+(jbuild_version 1)

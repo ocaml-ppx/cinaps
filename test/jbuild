@@ -3,4 +3,4 @@
   (deps   (test.ml))
   (action (bash "${bin:cinaps} ${<}"))))
 
-(jbuild_version jane_street)
+(jbuild_version 1)
