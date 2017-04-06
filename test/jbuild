@@ -3,4 +3,9 @@
   (deps   (test.ml))
   (action (bash "${bin:cinaps} ${<}"))))
 
+(alias
+ ((name runtest)
+  (deps   (test.c))
+  (action (bash "${bin:cinaps} ${<}"))))
+
 (jbuild_version 1)

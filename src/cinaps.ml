@@ -40,10 +40,10 @@ let exec_code ~pos code =
 
 let execute ~last_text_block ~code_start ~code =
   exec_code ~pos:{ pos_fname = "<cinaps internal>"
-                     ; pos_cnum  = 0
-                     ; pos_bol   = 0
-                     ; pos_lnum  = 1
-                     }
+                 ; pos_cnum  = 0
+                 ; pos_bol   = 0
+                 ; pos_lnum  = 1
+                 }
     (Printf.sprintf "let _last_text_block = %S" last_text_block);
   exec_code ~pos:code_start code
 
@@ -72,11 +72,49 @@ let protect ~finally ~f =
   | x -> finally (); x
   | exception e -> finally (); raise e
 
+type syntax =
+  | Auto
+  | This of Syntax.t
+
+let syntax_of_string = function
+  | "auto"  -> Auto
+  | "c"     -> This Syntax.c
+  | "ocaml" -> This Syntax.ocaml
+  | "sexp"  -> This Syntax.sexp
+  | s       -> Printf.ksprintf invalid_arg "syntax_of_string (%S)" s
+
+let syntax_of_filename fn =
+  let unknown () =
+    let pos =
+      { Lexing.
+        pos_fname = fn
+      ; pos_lnum  = 1
+      ; pos_cnum  = 0
+      ; pos_bol   = 0
+      }
+    in
+    let loc = { Location.loc_ghost = false; loc_start = pos; loc_end = pos } in
+    Location.raise_errorf ~loc
+      "Don't know what syntax to use for this file, pass an explicit [-syntax] option"
+  in
+  match String.rindex fn '.' with
+  | exception _ -> unknown ()
+  | i ->
+    match String.sub fn ~pos:(i + 1) ~len:(String.length fn - i - 1) with
+    | "ml" | "mli" | "mll" | "mly" -> Syntax.ocaml
+    | "c"| "h" | "cpp" | "c++" | "cxx" -> Syntax.c
+    | "sexp" -> Syntax.sexp
+    | _ ->
+      match Filename.basename fn with
+      | "jbuild" -> Syntax.sexp
+      | _ -> unknown ()
+
 let main () =
   let in_place     = ref false in
   let styler       = ref None  in
   let diff_command = ref None  in
   let use_color    = ref false in
+  let syntax       = ref Auto in
   let args =
     Arg.align
       [ "-i", Set in_place,
@@ -87,6 +125,9 @@ let main () =
         " Don't use colors when printing errors"
       ; "-styler", String (fun s -> styler := Some s),
         " Code styler"
+      ; "-syntax", Symbol ([ "auto"; "c"; "ocaml" ],
+                           fun s -> syntax := syntax_of_string s),
+        " Syntax to use (default: auto)"
       ]
   in
   let usage =
@@ -100,6 +141,11 @@ let main () =
     ; doc = "Read, compile and execute source phrases from the given file.";
     };
   let process_file fn =
+    let syntax =
+      match !syntax with
+      | Auto -> syntax_of_filename fn
+      | This s -> s
+    in
     Toploop.initialize_toplevel_env ();
     Location.input_name := fn;
     let file_contents = read_file fn in
@@ -115,7 +161,7 @@ let main () =
           ; pos_lnum  = 1
           ; pos_bol   = 0
           };
-        Lexer.lex execute file_contents true 0 lexbuf;
+        Parse.run ~f:execute ~syntax ~file_name:fn ~file_contents;
         flush stdout;
         Unix.close Unix.stdout;
         Unix.dup2 stdout_copy Unix.stdout;
