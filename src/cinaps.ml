@@ -190,7 +190,7 @@ let main () =
             exit 1
           | WSTOPPED _ -> assert false)
     in
-    let corrected_fn = fn ^ ".corrected" in
+    let corrected_fn = fn ^ ".cinaps-corrected" in
     if file_contents = expected then begin
       if Sys.file_exists corrected_fn then Sys.remove corrected_fn
     end else if !in_place then

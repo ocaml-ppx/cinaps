@@ -9,7 +9,7 @@ build: [
   ["jbuilder" "build" "-p" name "-j" jobs]
 ]
 depends: [
-  "jbuilder" {build & >= "1.0+beta8"}
+  "jbuilder" {build & >= "1.0+beta12"}
   "re"       {>= "1.5.0"}
 ]
 available: [ ocaml-version >= "4.04.1" ]
