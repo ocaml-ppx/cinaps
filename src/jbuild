@@ -1,5 +1,6 @@
 (library
  ((name cinaps)
+  (flags (:standard -unsafe-string))
   (libraries (compiler-libs.toplevel unix))
   (preprocess no_preprocessing)))
 
