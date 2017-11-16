@@ -1,7 +1,7 @@
 open StdLabels
 open Syntax
 
-let out = output stdout
+let out = output_substring stdout
 
 let rec advance_bol s (bol : Lexing.position) ~start ~stop =
   if start >= stop then
