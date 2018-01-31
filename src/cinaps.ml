@@ -110,11 +110,11 @@ let syntax_of_filename fn =
       | _ -> unknown ()
 
 let main () =
-  let in_place     = ref false in
-  let styler       = ref None  in
-  let diff_command = ref None  in
-  let use_color    = ref false in
-  let syntax       = ref Auto in
+  let in_place       = ref false in
+  let styler         = ref None  in
+  let diff_command   = ref None  in
+  let use_color      = ref false in
+  let syntax         = ref Auto in
   let args =
     Arg.align
       [ "-i", Set in_place,
@@ -196,13 +196,18 @@ let main () =
     end else if !in_place then
       write_file fn expected
     else begin
-      failure := true;
       write_file corrected_fn expected;
-      Print_diff.print ()
-        ?diff_command:!diff_command
-        ~use_color:!use_color
-        ~file1:fn
-        ~file2:corrected_fn
+      match !diff_command with
+      | Some "-" ->
+        (* keep the corrected file but do not output the diff *)
+        ()
+      | diff_command ->
+        failure := true;
+        Print_diff.print ()
+          ?diff_command
+          ~use_color:!use_color
+          ~file1:fn
+          ~file2:corrected_fn
     end
   in
   try
