@@ -8,4 +8,5 @@
   (deps   (test.c))
   (action (bash "${bin:cinaps} ${<}"))))
 
+
 (jbuild_version 1)
