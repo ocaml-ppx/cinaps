@@ -98,3 +98,46 @@ let rec power_int64 n p =
 
 Now, whenever you modify power_int32, you can just run cinaps to get
 the =power_int64= version.
+
+** Sharing values across multiple files
+
+The toplevel directive ~#use~ works in CINAPS, and can be used to read in values
+from other files. For example,
+
+1. In ~import.cinaps~,
+
+   #+BEGIN_SRC ocaml
+     (* -*- mode: tuareg -*- *)
+     include StdLabels
+     include Printf
+
+     let all_fields = [ "name", "string"; "age", "int" ]
+   #+END_SRC
+
+2. In ~foo.ml~,
+
+   #+BEGIN_SRC ocaml
+     (*$ #use "import.cinaps";;
+              List.iter all_fields ~f:(fun (name, type_) ->
+                printf "\n\
+                  external get_%s : unit -> %s = \"get_%s\"" name type_ name) *)
+     external get_name : unit -> string = "get_name"
+     external get_age : unit -> int = "get_age"(*$*)
+   #+END_SRC
+
+3. In ~stubs.h~,
+
+   #+BEGIN_SRC C
+     /*$ #use "import.cinaps";;
+              List.iter all_fields ~f:(fun (name, _) ->
+                printf "\n\
+                  extern value get_%s(void);" name) */
+     extern value get_name(void);
+     extern value get_age(void);/*$*/
+   #+END_SRC
+
+Etc.
+
+Note that the ~#use~ directive will read in OCaml from files of any extension.
+~*.cinaps~ is a safe choice in the presence of jenga and dune, which by default
+tries to use all ~*.ml~ files in the directory for the executables or library.
