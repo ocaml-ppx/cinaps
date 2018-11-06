@@ -10,7 +10,7 @@ It is intended for two purposes:
   to help writing and maintaining them
 
 It is not intended as a general preprocessor, and in particular cannot
-only be used to generate static code that is indenpendant of the
+only be used to generate static code that is independent of the
 system.
 
 ** How does it work?
@@ -140,4 +140,12 @@ Etc.
 
 Note that the ~#use~ directive will read in OCaml from files of any extension.
 ~*.cinaps~ is a safe choice in the presence of jenga and dune, which by default
-tries to use all ~*.ml~ files in the directory for the executables or library.
+try to use all ~*.ml~ files in the directory for the executables or library.
+
+** Automatic reformatting of CINAPS output
+
+In files managed by automatic formatting tools such as ocp-indent or
+ocamlformat, the code need not come out of CINAPs already formatted correctly.
+
+~cinaps.exe -styler FOO~ uses ~FOO~ to reformat its output, before diffing
+against the source file.
