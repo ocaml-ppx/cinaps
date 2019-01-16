@@ -1,0 +1,5 @@
+(alias (name runtest) (deps (:first_dep test.ml))
+ (action (bash "%{bin:cinaps} %{first_dep}")))
+
+(alias (name runtest) (deps (:first_dep test.c))
+ (action (bash "%{bin:cinaps} %{first_dep}")))

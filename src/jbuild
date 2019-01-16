@@ -1,7 +1,0 @@
-(library
- ((name cinaps)
-  (libraries (compiler-libs.toplevel unix re))
-  (preprocess no_preprocessing)))
-
-
-(jbuild_version 1)
