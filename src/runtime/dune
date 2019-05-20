@@ -1,0 +1,2 @@
+(library (name cinaps_runtime) (public_name cinaps.runtime) (libraries unix)
+ (preprocess no_preprocessing))
