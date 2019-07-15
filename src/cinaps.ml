@@ -91,7 +91,7 @@ let main () =
   let init_staged fn =
     let oc = open_out fn in
     staged_output := Some oc;
-    Printf.fprintf oc "Cinaps_runtime.init ();;\n"
+    Printf.fprintf oc "let () = Cinaps_runtime.init ()\n"
   in
   let args =
     Arg.align
@@ -141,7 +141,7 @@ let main () =
           "let () = Cinaps_runtime.copy_input %d %d;;\n"
           pos len
       in
-      Printf.fprintf oc "Cinaps_runtime.process_file\n\
+      Printf.fprintf oc "let () = Cinaps_runtime.process_file\n\
                         \  ~file_name:%S\n\
                         \  ~file_contents:%s\n\
                         \  (fun () -> let module M = struct\n"
