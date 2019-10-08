@@ -3,3 +3,13 @@
 
 (alias (name runtest) (deps (:first_dep test.c))
  (action (bash "%{bin:cinaps} %{first_dep}")))
+
+(rule (deps test_staged.ml) (targets test_staged_gen.ml)
+ (action (bash "%{bin:cinaps} -staged test_staged_gen.ml test_staged.ml")))
+
+(executables (names test_staged_gen) (modules test_staged_gen)
+ (libraries cinaps.runtime)
+ (preprocess (pps ppx_jane -allow-toplevel-expression)))
+
+(alias (name runtest) (deps test_staged_gen.exe)
+ (action (bash ./test_staged_gen.exe)))

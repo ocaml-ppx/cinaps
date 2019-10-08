@@ -30,5 +30,5 @@ let c =
 let sexp =
   make
     ~comment_start:(Re.str "#|")
-    ~comment_end:(Re.str "*|#")
+    ~comment_end:(Re.str "|#")
     ~is_ocaml:false
