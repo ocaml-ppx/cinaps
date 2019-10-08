@@ -4,7 +4,6 @@ authors: ["Jane Street Group, LLC <opensource@janestreet.com>"]
 homepage: "https://github.com/janestreet/cinaps"
 bug-reports: "https://github.com/janestreet/cinaps/issues"
 dev-repo: "git+https://github.com/janestreet/cinaps.git"
-doc: "https://ocaml.janestreet.com/ocaml-core/latest/doc/cinaps/index.html"
 license: "MIT"
 build: [
   ["dune" "build" "-p" name "-j" jobs]
