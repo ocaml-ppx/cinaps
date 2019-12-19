@@ -26,7 +26,8 @@ let exec_code ~pos code =
   let phrases = !Toploop.parse_use_file lexbuf in
   List.iter phrases ~f:(fun phrase ->
     if not (Toploop.execute_phrase false Format.err_formatter phrase : bool) then
-      exit 1)
+      exit 1;
+    flush stdout)
 
 let execute ~file_contents ~last_text_block:(pos, len) ~code_start ~code =
   exec_code ~pos:{ pos_fname = "<cinaps internal>"

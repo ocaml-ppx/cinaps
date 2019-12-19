@@ -22,3 +22,9 @@ let f = function
   | (*$blah()*)42(*$*) -> "blah"
   | (*$foo() *)1(*$*)  -> "foo"
   | (*$bar() *)2(*$*)  -> "bar"
+
+(* before shell call *)
+(*$ Unix.system "echo -e '\n(* produced by shell call *)'" *)
+(* produced by shell call *)
+(*$*)
+(* after shell call *)
