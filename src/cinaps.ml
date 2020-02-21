@@ -68,7 +68,7 @@ let syntax_of_filename fn =
   | exception _ -> unknown ()
   | i ->
     match String.sub fn ~pos:(i + 1) ~len:(String.length fn - i - 1) with
-    | "ml" | "mli" | "mll" | "mly" -> Syntax.ocaml
+    | "ml" | "mli" | "mll" | "mly" | "mld" -> Syntax.ocaml
     | "c"| "h" | "cpp" | "c++" | "cxx" -> Syntax.c
     | "sexp" -> Syntax.sexp
     | _ ->
