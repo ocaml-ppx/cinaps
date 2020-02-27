@@ -1,9 +1,3 @@
-(alias (name runtest) (deps (:first_dep test.ml))
- (action (bash "%{bin:cinaps} %{first_dep}")))
-
-(alias (name runtest) (deps (:first_dep test.c))
- (action (bash "%{bin:cinaps} %{first_dep}")))
-
 (rule (deps test_staged.ml) (targets test_staged_gen.ml)
  (action (bash "%{bin:cinaps} -staged test_staged_gen.ml test_staged.ml")))
 

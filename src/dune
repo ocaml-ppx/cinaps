@@ -1,3 +1,2 @@
-(library (name cinaps)
- (libraries compiler-libs.toplevel unix re cinaps.runtime)
+(library (name cinaps) (libraries unix re cinaps.runtime)
  (preprocess no_preprocessing))

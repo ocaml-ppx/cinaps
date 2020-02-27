@@ -1,4 +1,2 @@
-(executables (names main) (libraries cinaps str) (link_flags -linkall)
+(executables (names main) (public_names cinaps) (libraries cinaps)
  (preprocess no_preprocessing))
-
-(install (section bin) (files (main.bc as cinaps)))
