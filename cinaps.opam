@@ -13,6 +13,8 @@ depends: [
   "ocaml" {>= "4.07.0"}
   "dune" {>= "2.0.0"}
   "re"   {>= "1.8.0"}
+  "ppx_jane" {with-test}
+  "base-unix"
 ]
 synopsis: "Trivial metaprogramming tool"
 description: "
