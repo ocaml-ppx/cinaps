@@ -81,6 +81,18 @@ let write_file fn s =
   output_string oc s;
   close_out oc
 
+let split_string_on_char ~sep s =
+  let open String in
+  let r = ref [] in
+  let j = ref (length s) in
+  for i = length s - 1 downto 0 do
+    if unsafe_get s i = sep then begin
+      r := sub s ~pos:(i + 1) ~len:(!j - i - 1) :: !r;
+      j := i
+    end
+  done;
+  sub s ~pos:0 ~len:!j :: !r
+
 let process_file ~file_name ~file_contents f =
   let tmp_fn, oc = Filename.open_temp_file "cinaps" (Filename.extension file_name) in
   let expected =
@@ -98,7 +110,7 @@ let process_file ~file_name ~file_contents f =
       | (".ml" | ".mli"), Some cmd -> begin
         let cmd =
           String.concat ~sep:""
-            (match String.split_on_char cmd ~sep:'%' with
+            (match split_string_on_char cmd ~sep:'%' with
              | [] -> assert false
              | x :: l ->
                x :: List.map l ~f:(fun s ->
