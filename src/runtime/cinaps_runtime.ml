@@ -1,3 +1,5 @@
+let split_string_on_char ~sep s = String.split_on_char sep s
+
 open StdLabels
 
 let in_place = ref false
@@ -80,18 +82,6 @@ let write_file fn s =
   let oc = open_out_bin fn in
   output_string oc s;
   close_out oc
-
-let split_string_on_char ~sep s =
-  let open String in
-  let r = ref [] in
-  let j = ref (length s) in
-  for i = length s - 1 downto 0 do
-    if unsafe_get s i = sep then begin
-      r := sub s ~pos:(i + 1) ~len:(!j - i - 1) :: !r;
-      j := i
-    end
-  done;
-  sub s ~pos:0 ~len:!j :: !r
 
 let process_file ~file_name ~file_contents f =
   let tmp_fn, oc = Filename.open_temp_file "cinaps" (Filename.extension file_name) in
