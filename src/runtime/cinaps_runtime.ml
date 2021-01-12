@@ -1,3 +1,5 @@
+let split_string_on_char ~sep s = String.split_on_char sep s
+
 open StdLabels
 
 let in_place = ref false
@@ -98,7 +100,7 @@ let process_file ~file_name ~file_contents f =
       | (".ml" | ".mli"), Some cmd -> begin
         let cmd =
           String.concat ~sep:""
-            (match String.split_on_char cmd ~sep:'%' with
+            (match split_string_on_char cmd ~sep:'%' with
              | [] -> assert false
              | x :: l ->
                x :: List.map l ~f:(fun s ->
