@@ -1,3 +1,10 @@
+## Next
+
+### Changed
+
+- The styler is now unconditionally applied; it used to be applied only to
+  files with extension ".ml" or ".mli" (#5)
+
 ## v0.15.0
 
 ### Fixed
