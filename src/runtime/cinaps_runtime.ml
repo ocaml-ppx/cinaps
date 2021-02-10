@@ -96,8 +96,8 @@ let process_file ~file_name ~file_contents f =
       Unix.close Unix.stdout;
       Unix.dup2 stdout_copy Unix.stdout;
       Unix.close stdout_copy;
-      match Filename.extension file_name, !styler with
-      | (".ml" | ".mli"), Some cmd -> begin
+      match !styler with
+      | Some cmd -> begin
         let cmd =
           String.concat ~sep:""
             (match split_string_on_char cmd ~sep:'%' with
