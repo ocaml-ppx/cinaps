@@ -1,0 +1,7 @@
+(rule
+ (targets test_empty.ml)
+ (action (bash "%{bin:cinaps} -staged test_empty.ml")))
+
+(test
+ (libraries cinaps.runtime)
+ (name test_empty))
