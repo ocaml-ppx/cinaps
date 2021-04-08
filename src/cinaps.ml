@@ -62,7 +62,7 @@ let main () =
   let init_staged fn =
     let oc = open_out fn in
     staged_output := Some oc;
-    Printf.fprintf oc "let () = Cinaps_runtime.init ()\n"
+    Printf.fprintf oc "let () = Cinaps_runtime.init ();;\n"
   in
   let args =
     Arg.align
