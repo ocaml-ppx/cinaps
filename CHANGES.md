@@ -1,3 +1,7 @@
+## Unreleased
+
+- Correctly generate empty cinaps files (#6)
+
 ## v0.15.1
 
 ### Changed
