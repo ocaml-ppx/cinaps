@@ -112,7 +112,7 @@ let main () =
         "let () = Cinaps_runtime.process_file\n\
         \  ~file_name:%S\n\
         \  ~file_contents:%s\n\
-        \  (fun () -> let module M = struct\n"
+        \  (fun () -> let module _ = struct\n"
         fn
         (quote_string file_contents);
       process_file ~f:append_code_block ~syntax ~file_contents ~file_name:fn ~copy_input;
