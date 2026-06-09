@@ -69,7 +69,8 @@ let main () =
   let args =
     Arg.align
       ([ ( "-syntax"
-         , Arg.Symbol ([ "auto"; "c"; "ocaml" ], fun s -> syntax := syntax_of_string s)
+         , Arg.Symbol ([ "auto"; "c"; "ocaml"; "rocq"; "sexp" ]
+                      , fun s -> syntax := syntax_of_string s)
          , " Syntax to use (default: auto)" )
        ; ( "-staged"
          , String init_staged
