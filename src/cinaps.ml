@@ -26,6 +26,7 @@ let syntax_of_string = function
   | "auto" -> Auto
   | "c" -> This Syntax.c
   | "ocaml" -> This Syntax.ocaml
+  | "coq" | "rocq" -> This Syntax.rocq
   | "sexp" -> This Syntax.sexp
   | s -> Printf.ksprintf invalid_arg "syntax_of_string (%S)" s
 ;;
@@ -43,6 +44,7 @@ let syntax_of_filename fn =
     (match String.sub fn ~pos:(i + 1) ~len:(String.length fn - i - 1) with
      | "ml" | "mli" | "mll" | "mly" | "mld" -> Syntax.ocaml
      | "c" | "h" | "cpp" | "c++" | "cxx" -> Syntax.c
+     | "v" -> Syntax.rocq
      | "sexp" -> Syntax.sexp
      | _ ->
        (match Filename.basename fn with

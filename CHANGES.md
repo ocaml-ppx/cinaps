@@ -1,6 +1,7 @@
 ## Unreleased
 
 - Correctly generate empty cinaps files (#6)
+- Support rocq files (.v) (#?)
 
 ## v0.15.1
 
