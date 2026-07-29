@@ -6,4 +6,5 @@ type t =
 
 val ocaml : t
 val c : t
+val rocq : t
 val sexp : t

@@ -1,6 +1,8 @@
 ## Unreleased
 
 - Correctly generate empty cinaps files (#6)
+- Support rocq files (.v) and support passing "sexp" syntax as a command
+  line option (#10)
 
 ## v0.15.1
 
